@@ -1,0 +1,201 @@
+GoLogoLo App (Final Project Design)
+Author: Katheryn Martinez Hernandez
+ID# 110025722
+
+The following set of queries should be able to be entered right into GraphiQL Web App for adding, 
+querying, updating, and removing logos from GoLogoLo Database (once back-end is implemented).
+
+LOGO FIELDS QUERY:
+fragment logoData on logo {
+  _id
+  text {
+      text
+      x_position
+      y_position
+  }
+  imageUrl
+  color
+  fontSize
+  backgroundColor
+  borderColor
+  borderRadius
+  borderWidth
+  padding
+  margin
+  width 
+  height
+  lastUpdate
+}
+
+
+USER FIELDS QUERY:
+fragment userData on user {
+    username
+    password
+    userLogos {
+        ...logoData
+    }
+}
+
+
+QUERY TO ADD A USER:
+mutation {
+    addUser(username:"cheshirekat@wonderland.com", password:"madhatter69") {
+      ...userData
+    }
+}
+
+
+QUERY TO RETRIEVE A USER:
+{
+  user(username:"cheshirekat@wonderland.com", password:"madhatter69") {
+      ...userData
+    }
+}
+
+QUERY TO UPDATE A USER:
+mutation {
+  updateUser(username:"cheshirekat@wonderland.com", password:"ticktockgoestheclock") {
+    ...userData
+  }
+}
+
+
+QUERY TO DELETE A USER:
+mutation {
+    removeUser(username:"cheshirekat@wonderland.com") {
+      ...userData
+    }
+}
+
+
+QUERY TO DELETE MULTIPLE USERS AT A TIME:
+mutation {
+  user1: removeUser(username:"cheshirekat@wonderland.com") {
+    ...userData
+  }
+  user2: removeUser(username:"redqueen@wonderland.com") {
+    ...userData
+  }
+}
+
+
+QUERY TO DELETE ALL USERS:
+mutation {
+  removeUsers {
+    ...userData
+  }
+}
+
+
+QUERY TO RETRIEVE ALL LOGOS FOR A SPECIFIC USER:
+{
+    logos(username:"cheshirekat@wonderland.com"){
+        ...logoData
+    }
+}
+
+
+QUERY TO RETRIEVE A SPECIFIC LOGO:
+{
+    logo(username:"cheshirekat@wonderland.com", id:"5e8d1fb8bcafaa0288ce754c") {
+        ...logoData
+    }
+}
+
+
+QUERY TO RETRIEVE MULTIPLE LOGOS AT A TIME:
+{ 
+ logo1: logo(username:"cheshirekat@wonderland.com", id:"5e8d1fb8bcafaa0288ce754c") {
+    ...logoData
+  }
+ logo2: logo(username:"cheshirekat@wonderland.com", id:"5e8e3825e95d56025282f2f8") {
+    ...logoData
+  }
+}
+
+
+QUERY TO ADD A LOGO:
+mutation {
+  addLogo(username:"cheshirekat@wonderland.com",
+      text: [{text:"Quarantine", x_position:0, y_position:30}, {text:"Inc.", x_position:10, y_position:20}],
+      imageUrl:"https://pandemic.com/images/quarantine.jpg", color:"#a52a2a", fontSize:50, 
+      backgroundColor:"#ffebcd", borderColor:"#6495ed", borderRadius:8, borderWidth:10, 
+      padding:6, margin:10, width:180, height:49) {
+        ...logoData
+    }
+}
+
+
+QUERY TO ADD MULTIPLE LOGOS AT A TIME:
+mutation {
+  logo1: addLogo(
+      username:"cheshirekat@wonderland.com",
+      text: [{text:"APPLE", x_position:10, y_position:5}, {text:"IS A FRUIT", x_position:15, y_position:3}],
+      imageUrl:"https://apples.com/images.jpg", color:"#dc143c", fontSize:25, backgroundColor:"#ffffff", 
+      borderColor:"#fffaf0", borderRadius:5, borderWidth:15, padding:6, margin:10, width:50, height:50) {
+          ...logoData
+    }
+  logo2: addLogo(
+      username:"cheshirekat@wonderland.com",
+      text: [{text:"ORANGES ARE", x_position:10, y_position:5}, {text:"DELICIOUS", x_position:15, y_position:3}],
+      imageUrl:"https://orangesyum.com/images.jpg", color:"#dc143c", fontSize:25, backgroundColor:"#ffffff", 
+      borderColor:"#000000", borderRadius:10, borderWidth:10, padding:6, margin:10, width:50, height:50) {
+          ...logoData
+    }
+}
+
+
+QUERY TO UPDATE A LOGO:
+mutation {
+    updateLogo(username:"cheshirekat@wonderland.com", id:"5e92939ae94eff0275625aee",
+      text: [{text:"ORANGES ARE", x_position:10, y_position:5}, {text:"YUMMY", x_position:15, y_position:3}],
+      imageUrl:"", color:"#dc143c", fontSize:40, backgroundColor:"#ffffff", borderColor:"#000000", 
+      borderRadius:5, borderWidth:5, padding:5, margin:10, width:60, height:60) {
+          ...logoData
+    }
+}
+
+
+QUERY TO UPDATE MULTIPLE LOGOS AT A TIME:
+mutation {
+  logo1: updateLogo(username:"cheshirekat@wonderland.com", id:"5e8d1fb8bcafaa0288ce754c",
+      text: [{text:"YOU SAY", x_position:10, y_position:5},{text:"HELLO", x_position:15, y_position:3}],
+      imageUrl:"https://beatles.com/images.jpg", color:"#dc143c", fontSize:25, backgroundColor:"#ffffff", 
+      borderColor:"#fffaf0", borderRadius:5, borderWidth:15, padding:6, margin:10, width:50, height:50) {
+          ...logoData
+    }
+  logo2: updateLogo(username:"cheshirekat@wonderland.com", id:"5e939ee12b78a504a6fa07da",
+      text: [{text:"I SAY", x_position:10, y_position:5}, {text:"GOODBYE", x_position:15, y_position:3}],
+      imageUrl:"https://beatles.com/images.jpg", color:"#dc143c", fontSize:25, backgroundColor:"#ffffff", 
+      borderColor:"#000000", borderRadius:10, borderWidth:10, padding:6, margin:10, width:50, height:50) {
+          ...logoData
+    }
+}
+
+
+QUERY TO DELETE A LOGO:
+mutation {
+  removeLogo(username:"cheshirekat@wonderland.com", id:"5e92939ae94eff0275625aee") {
+    ...logoData
+  }
+}
+
+
+QUERY TO DELETE MULTIPLE LOGOS AT A TIME:
+mutation {
+  logo1: removeLogo(username:"cheshirekat@wonderland.com", id:"5e93a1372b78a504a6fa07db") {
+    ...logoData
+  }
+  logo2: removeLogo(username:"cheshirekat@wonderland.com", id: "5e93a1372b78a504a6fa07dc") {
+    ...logoData
+  }
+}
+
+
+QUERY TO DELETE ALL LOGOS:
+mutation {
+  removeLogos {
+    ...logoData
+  }
+}
